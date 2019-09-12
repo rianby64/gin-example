@@ -1,6 +1,5 @@
 #!/bin/bash
 
-docker network rm gin-example-net
 docker container stop gin-example-go
 docker network create gin-example-net
 
