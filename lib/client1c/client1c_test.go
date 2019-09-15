@@ -10,7 +10,7 @@ import (
 
 func Test_client1c_CRUD__OK(t *testing.T) {
 	client := client1c.NewEntryClient()
-	t.Run("1 - read empty", func(t *testing.T) {
+	t.Run("get entry list", func(t *testing.T) {
 		resp, err := client.GetEntryList()
 		if err != nil {
 			t.Fatal(err)
@@ -25,7 +25,7 @@ func Test_client1c_CRUD__OK(t *testing.T) {
 		assert.Equal(t, expected, resp)
 	})
 
-	t.Run("2 - post -> OK", func(t *testing.T) {
+	t.Run("create entry", func(t *testing.T) {
 		resp, err := client.CreateEntry()
 		if err != nil {
 			t.Fatal(err)

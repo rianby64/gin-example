@@ -17,3 +17,24 @@ func (mc *MockClient) GetEntryList() (map[string]interface{}, error) {
 		"status": "ok",
 	}, nil
 }
+
+// GetEntry for testing
+func (mc *MockClient) GetEntry() (map[string]interface{}, error) {
+	return map[string]interface{}{
+		"status": "ok",
+	}, nil
+}
+
+// UpdateEntry for testing
+func (mc *MockClient) UpdateEntry() (map[string]interface{}, error) {
+	return map[string]interface{}{
+		"status": "ok",
+	}, nil
+}
+
+// DeleteEntry for testing
+func (mc *MockClient) DeleteEntry() (map[string]interface{}, error) {
+	return map[string]interface{}{
+		"status": "ok",
+	}, nil
+}

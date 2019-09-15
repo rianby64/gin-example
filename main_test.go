@@ -33,7 +33,7 @@ func Test_check_connection(t *testing.T) {
 }
 
 func Test_articles_CRUD__OK(t *testing.T) {
-	t.Run("1 - read empty", func(t *testing.T) {
+	t.Run("get list", func(t *testing.T) {
 		resp, err := requestResponse("GET", "api/articles", nil)
 		if err != nil {
 			t.Fatal(err)
@@ -43,8 +43,38 @@ func Test_articles_CRUD__OK(t *testing.T) {
 		assert.Equal(t, expected, resp)
 	})
 
-	t.Run("2 - post -> OK", func(t *testing.T) {
+	t.Run("get", func(t *testing.T) {
+		resp, err := requestResponse("GET", "api/articles/1", nil)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		expected, _ := mockClient1C.GetEntryList()
+		assert.Equal(t, expected, resp)
+	})
+
+	t.Run("post", func(t *testing.T) {
 		resp, err := requestResponse("POST", "api/articles", nil)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		expected, _ := mockClient1C.CreateEntry()
+		assert.Equal(t, expected, resp)
+	})
+
+	t.Run("patch", func(t *testing.T) {
+		resp, err := requestResponse("PATCH", "api/articles/1", nil)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		expected, _ := mockClient1C.CreateEntry()
+		assert.Equal(t, expected, resp)
+	})
+
+	t.Run("delete", func(t *testing.T) {
+		resp, err := requestResponse("DELETE", "api/articles/1", nil)
 		if err != nil {
 			t.Fatal(err)
 		}
