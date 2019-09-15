@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	client1c "github.com/rianby64/gin-example/lib/client1c"
+	client1c "github.com/rianby64/gin-example/lib/1c-client"
 )
 
 // SetupClient1C constructs the client for main
@@ -27,7 +27,13 @@ func SetupRouter(entryClient client1c.EntryClient) *gin.Engine {
 	})
 
 	r.GET("/api/articles", func(c *gin.Context) {
-		result, _ := entryClient.GetEntryList()
+		entries, _ := entryClient.GetEntryList()
+		result := map[string]interface{}{
+			"links": map[string]interface{}{
+				"self": "api/articles",
+			},
+			"data": entries,
+		}
 		c.JSON(http.StatusOK, result)
 	})
 

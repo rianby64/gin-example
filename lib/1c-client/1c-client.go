@@ -2,7 +2,7 @@ package client
 
 // EntryClient manages the proxy to bring Entries from somewhere
 type EntryClient interface {
-	GetEntryList() (map[string]interface{}, error)
+	GetEntryList() ([]interface{}, error)
 	GetEntry() (map[string]interface{}, error)
 	CreateEntry() (map[string]interface{}, error)
 	UpdateEntry() (map[string]interface{}, error)
@@ -13,14 +13,8 @@ type client struct {
 }
 
 // GetEntryList retreives from 1C the info
-func (ec *client) GetEntryList() (map[string]interface{}, error) {
-	result := map[string]interface{}{
-		"links": map[string]interface{}{
-			"self": "api/articles",
-		},
-		"data": []interface{}{},
-	}
-	return result, nil
+func (ec *client) GetEntryList() ([]interface{}, error) {
+	return []interface{}{}, nil
 }
 
 // GetEntry retreives from 1C the info

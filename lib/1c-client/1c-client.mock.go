@@ -12,10 +12,8 @@ func (mc *MockClient) CreateEntry() (map[string]interface{}, error) {
 }
 
 // GetEntryList for testing
-func (mc *MockClient) GetEntryList() (map[string]interface{}, error) {
-	return map[string]interface{}{
-		"status": "ok",
-	}, nil
+func (mc *MockClient) GetEntryList() ([]interface{}, error) {
+	return []interface{}{}, nil
 }
 
 // GetEntry for testing

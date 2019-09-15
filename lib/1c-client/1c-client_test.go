@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	client1c "github.com/rianby64/gin-example/lib/client1c"
+	client1c "github.com/rianby64/gin-example/lib/1c-client"
 )
 
 func Test_client1c_CRUD__OK(t *testing.T) {
@@ -16,12 +16,7 @@ func Test_client1c_CRUD__OK(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		expected := map[string]interface{}{
-			"links": map[string]interface{}{
-				"self": "api/articles",
-			},
-			"data": []interface{}{},
-		}
+		expected := []interface{}{}
 		assert.Equal(t, expected, resp)
 	})
 
