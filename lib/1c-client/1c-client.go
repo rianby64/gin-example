@@ -70,6 +70,5 @@ func (ec *client) DeleteEntry() (map[string]interface{}, error) {
 
 // NewEntryClient is the constructor for this proxy
 func NewEntryClient() EntryClient {
-	c := client{}
-	return &c
+	return &client{}
 }
