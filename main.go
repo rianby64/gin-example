@@ -6,29 +6,20 @@ import (
 	"github.com/gin-gonic/gin"
 
 	client1C "github.com/rianby64/gin-example/lib/1c-client"
-	clientJSONAPI "github.com/rianby64/gin-example/lib/jsonapi-client"
+	jsonAPI "github.com/rianby64/gin-example/lib/jsonapi"
 )
 
 // SetupClient1C constructs the client for main
-func SetupClient1C() client1C.EntryClient {
-	return client1C.NewEntryClient()
-}
-
-// DummyMiddleware first md
-func DummyMiddleware(c *gin.Context) {
-	// this fn is being executed before any handler
-
-	// Pass on to the next-in-chain
-	c.Next()
+func SetupClient1C() client1C.Interface {
+	return client1C.New()
 }
 
 // SetupRouter the server
-func SetupRouter(entryClient client1C.EntryClient) *gin.Engine {
+func SetupRouter(entryClient client1C.Interface) *gin.Engine {
 	api := gin.Default()
-	api.Use(DummyMiddleware)
+	api4JSON := jsonAPI.NewEngine(api)
 
-	// gin.H is a shortcut for map[string]interface{}
-	api.GET("/", func(c *gin.Context) {
+	api4JSON.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"links": map[string]interface{}{
 				"self": "/",
@@ -36,14 +27,15 @@ func SetupRouter(entryClient client1C.EntryClient) *gin.Engine {
 		})
 	})
 
-	api.GET("/api/articles", func(c *gin.Context) {
-		jsonapi := clientJSONAPI.NewJSONAPIRequest()
-		entries, _ := entryClient.GetEntryList()
-		status, result := jsonapi.Fetch(entries)
-		c.JSON(status, result)
-	})
+	api4JSON.HandleJSONAPI("GET", "api/articles",
+		func(jsonapi jsonAPI.Interface, ctx *gin.Context) (statusCode int, jsonResponse interface{}) {
+			return jsonapi.Fetch(func() ([]interface{}, error) {
+				return entryClient.GetEntryList()
+			})
+		},
+	)
 
-	api.POST("/api/articles", func(c *gin.Context) {
+	api4JSON.POST("api/articles", func(c *gin.Context) {
 		result, _ := entryClient.CreateEntry()
 		c.JSON(http.StatusOK, result)
 	})

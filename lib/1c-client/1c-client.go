@@ -1,7 +1,7 @@
 package client
 
-// EntryClient manages the proxy to bring Entries from somewhere
-type EntryClient interface {
+// Interface manages the proxy to bring Entries from somewhere
+type Interface interface {
 	GetEntryList() ([]interface{}, error)
 	GetEntry() (map[string]interface{}, error)
 	CreateEntry() (map[string]interface{}, error)
@@ -68,7 +68,7 @@ func (ec *client) DeleteEntry() (map[string]interface{}, error) {
 	return result, nil
 }
 
-// NewEntryClient is the constructor for this proxy
-func NewEntryClient() EntryClient {
+// New is the constructor for this proxy
+func New() Interface {
 	return &client{}
 }

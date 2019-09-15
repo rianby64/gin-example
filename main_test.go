@@ -43,7 +43,7 @@ func Test_articles_CRUD__OK(t *testing.T) {
 		data, _ := mockClient1C.GetEntryList()
 		expected := map[string]interface{}{
 			"links": map[string]interface{}{
-				"self": self,
+				"self": fmt.Sprintf("http://%s:%s/%s", host, port, self),
 			},
 			"data": data,
 		}

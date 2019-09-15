@@ -9,7 +9,7 @@ import (
 )
 
 func Test_client1c_CRUD__OK(t *testing.T) {
-	client := client1c.NewEntryClient()
+	client := client1c.New()
 	t.Run("get entry list", func(t *testing.T) {
 		resp, err := client.GetEntryList()
 		if err != nil {
