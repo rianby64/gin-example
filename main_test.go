@@ -25,13 +25,6 @@ func init() {
 	mockRouter = main.SetupRouter(mockClient1C)
 }
 
-func Test_check_connection(t *testing.T) {
-	_, err := requestResponse("GET", "", nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-}
-
 func Test_articles_CRUD__OK(t *testing.T) {
 	t.Run("get list", func(t *testing.T) {
 		self := "api/articles"

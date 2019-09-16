@@ -1,8 +1,6 @@
 package main
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 
 	client1C "github.com/rianby64/gin-example/lib/1c-client"
@@ -18,14 +16,6 @@ func SetupClient1C() client1C.Interface {
 func SetupRouter(client1c client1C.Interface) *gin.Engine {
 	api := gin.Default()
 	api4JSON := jsonAPI.NewEngine(api)
-
-	api.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"links": map[string]interface{}{
-				"self": "/",
-			},
-		})
-	})
 
 	api4JSON.HandleJSONAPI("GET", "api/articles",
 		func(jsonapi jsonAPI.Interface, ctx *gin.Context) (statusCode int, jsonResponse interface{}) {
