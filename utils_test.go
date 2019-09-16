@@ -13,7 +13,7 @@ import (
 
 var host string
 var port string
-var ErrorNot200OK = errors.New("Status is not 200")
+var Error404NotFound = errors.New("404 Not found")
 var mockRouter *gin.Engine
 
 func requestResponse(method string, from string, body io.Reader) (interface{}, error) {
@@ -24,8 +24,8 @@ func requestResponse(method string, from string, body io.Reader) (interface{}, e
 		return nil, err
 	}
 
-	if resp.Code != 200 {
-		return nil, ErrorNot200OK
+	if resp.Code == 404 {
+		return nil, Error404NotFound
 	}
 
 	var response interface{}

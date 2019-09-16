@@ -15,11 +15,11 @@ func SetupClient1C() client1C.Interface {
 }
 
 // SetupRouter the server
-func SetupRouter(entryClient client1C.Interface) *gin.Engine {
+func SetupRouter(client1c client1C.Interface) *gin.Engine {
 	api := gin.Default()
 	api4JSON := jsonAPI.NewEngine(api)
 
-	api4JSON.GET("/", func(c *gin.Context) {
+	api.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"links": map[string]interface{}{
 				"self": "/",
@@ -30,22 +30,25 @@ func SetupRouter(entryClient client1C.Interface) *gin.Engine {
 	api4JSON.HandleJSONAPI("GET", "api/articles",
 		func(jsonapi jsonAPI.Interface, ctx *gin.Context) (statusCode int, jsonResponse interface{}) {
 			return jsonapi.Fetch(func() ([]interface{}, error) {
-				return entryClient.GetEntryList()
+				return client1c.GetEntryList()
 			})
 		},
 	)
 
-	api4JSON.POST("api/articles", func(c *gin.Context) {
-		result, _ := entryClient.CreateEntry()
-		c.JSON(http.StatusOK, result)
-	})
+	api4JSON.HandleJSONAPI("POST", "api/articles",
+		func(jsonapi jsonAPI.Interface, ctx *gin.Context) (statusCode int, jsonResponse interface{}) {
+			return jsonapi.Create(func() (map[string]interface{}, error) {
+				return client1c.CreateEntry()
+			})
+		},
+	)
 
 	return api
 }
 
 func main() {
-	entryClient := SetupClient1C()
-	r := SetupRouter(entryClient)
+	client1c := SetupClient1C()
+	r := SetupRouter(client1c)
 
 	// Listen and serve on 0.0.0.0:8080
 	r.Run(":8080")

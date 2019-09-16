@@ -50,6 +50,26 @@ func Test_articles_CRUD__OK(t *testing.T) {
 		assert.Equal(t, expected, resp)
 	})
 
+	t.Run("post", func(t *testing.T) {
+		self := "api/articles"
+		resp, err := requestResponse("POST", self, nil)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		data, _ := mockClient1C.CreateEntry()
+		expected := map[string]interface{}{
+			"data": map[string]interface{}{
+				"type":       "photos",
+				"id":         "550e8400-e29b-41d4-a716-446655440000",
+				"attributes": data,
+				"links": map[string]interface{}{
+					"self": fmt.Sprintf("http://%s:%s/%s", host, port, self),
+				},
+			},
+		}
+		assert.Equal(t, expected, resp)
+	})
 	/*
 		t.Run("get", func(t *testing.T) {
 			resp, err := requestResponse("GET", "api/articles/1", nil)
@@ -61,15 +81,6 @@ func Test_articles_CRUD__OK(t *testing.T) {
 			assert.Equal(t, expected, resp)
 		})
 
-		t.Run("post", func(t *testing.T) {
-			resp, err := requestResponse("POST", "api/articles", nil)
-			if err != nil {
-				t.Fatal(err)
-			}
-
-			expected, _ := mockClient1C.CreateEntry()
-			assert.Equal(t, expected, resp)
-		})
 
 		t.Run("patch", func(t *testing.T) {
 			resp, err := requestResponse("PATCH", "api/articles/1", nil)
