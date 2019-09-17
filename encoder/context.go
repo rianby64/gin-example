@@ -1,4 +1,4 @@
-package serializer
+package encoder
 
 import (
 	"net/http"

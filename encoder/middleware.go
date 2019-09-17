@@ -1,4 +1,4 @@
-package serializer
+package encoder
 
 import (
 	"log"
@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Engine the Serializer extension for gin engine
+// Engine is the extension-ecoder for gin engine
 type Engine struct {
 	*gin.Engine
 }
@@ -14,7 +14,7 @@ type Engine struct {
 // Handler signature
 type Handler func(ce *Context) (statusCode int, jsonResponse interface{})
 
-// Middleware formats the responses by Serializer
+// Middleware formats the responses by the encoder
 func Middleware(c *gin.Context) {
 	c.Next()
 	handlerPtr, exists := c.Get("Handler")
