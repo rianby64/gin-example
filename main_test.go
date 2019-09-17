@@ -1,16 +1,92 @@
 package main_test
 
 import (
-	"net/http"
+	"fmt"
+	"os"
 	"testing"
+
+	"github.com/joho/godotenv"
+	"github.com/stretchr/testify/assert"
+
+	main "github.com/rianby64/gin-example"
+	client1c "github.com/rianby64/gin-example/lib/1c-client"
 )
 
-func Test_check_connection(t *testing.T) {
-	resp, err := http.Get("http://gin-example-go:8080/")
+var mockClient1C *client1c.MockClient
 
-	if err != nil {
-		t.Fatal(err)
+func init() {
+	err := godotenv.Load()
+	if err == nil {
+		host = os.Getenv("HOST")
+		port = os.Getenv("PORT")
 	}
+	fmt.Printf("Running host=%s\n", host)
+	mockClient1C = &client1c.MockClient{}
+	mockRouter = main.SetupRouter(mockClient1C)
+}
 
-	t.Log(resp.Status)
+func Test_articles_CRUD__OK(t *testing.T) {
+	t.Run("get list", func(t *testing.T) {
+		self := "api/articles"
+		resp, err := requestResponse("GET", self, nil)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		data, _ := mockClient1C.GetEntryList()
+		expected := map[string]interface{}{
+			"data": data,
+		}
+		assert.Equal(t, expected, resp)
+	})
+
+	t.Run("post", func(t *testing.T) {
+		self := "api/articles"
+		resp, err := requestResponse("POST", self, nil)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		data, _ := mockClient1C.CreateEntry()
+		expected := map[string]interface{}{
+			"data": map[string]interface{}{
+				"type":       "photos",
+				"id":         "550e8400-e29b-41d4-a716-446655440000",
+				"attributes": data,
+			},
+		}
+		assert.Equal(t, expected, resp)
+	})
+	/*
+		t.Run("get", func(t *testing.T) {
+			resp, err := requestResponse("GET", "api/articles/1", nil)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			expected, _ := mockClient1C.GetEntryList()
+			assert.Equal(t, expected, resp)
+		})
+
+
+		t.Run("patch", func(t *testing.T) {
+			resp, err := requestResponse("PATCH", "api/articles/1", nil)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			expected, _ := mockClient1C.CreateEntry()
+			assert.Equal(t, expected, resp)
+		})
+
+		t.Run("delete", func(t *testing.T) {
+			resp, err := requestResponse("DELETE", "api/articles/1", nil)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			expected, _ := mockClient1C.CreateEntry()
+			assert.Equal(t, expected, resp)
+		})
+	*/
 }

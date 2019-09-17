@@ -5,9 +5,15 @@ RUN apk add alpine-sdk
 RUN go get -u github.com/golang/dep/cmd/dep
 
 WORKDIR /go/src/github.com/rianby64/gin-example
+
+COPY Gopkg.lock .
+COPY Gopkg.toml .
+
+RUN dep ensure -vendor-only
+
 COPY . .
 
-RUN dep ensure -v
+COPY .env-go .env
 
 RUN go build
 
