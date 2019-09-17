@@ -35,9 +35,6 @@ func Test_articles_CRUD__OK(t *testing.T) {
 
 		data, _ := mockClient1C.GetEntryList()
 		expected := map[string]interface{}{
-			"links": map[string]interface{}{
-				"self": fmt.Sprintf("http://%s:%s/%s", host, port, self),
-			},
 			"data": data,
 		}
 		assert.Equal(t, expected, resp)
@@ -56,9 +53,6 @@ func Test_articles_CRUD__OK(t *testing.T) {
 				"type":       "photos",
 				"id":         "550e8400-e29b-41d4-a716-446655440000",
 				"attributes": data,
-				"links": map[string]interface{}{
-					"self": fmt.Sprintf("http://%s:%s/%s", host, port, self),
-				},
 			},
 		}
 		assert.Equal(t, expected, resp)

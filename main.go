@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	client1C "github.com/rianby64/gin-example/lib/1c-client"
-	jsonAPI "github.com/rianby64/gin-example/lib/jsonapi"
+	"github.com/rianby64/gin-example/lib/serializer"
 )
 
 // SetupClient1C constructs the client for main
@@ -14,26 +14,26 @@ func SetupClient1C() client1C.Interface {
 
 // SetupRouter the server
 func SetupRouter(client1c client1C.Interface) *gin.Engine {
-	api := gin.Default()
-	api4JSON := jsonAPI.NewEngine(api)
+	base := gin.Default()
+	api := serializer.NewEngine(base)
 
-	api4JSON.HandleJSONAPI("GET", "api/articles",
-		func(jsonapi jsonAPI.Interface, ctx *gin.Context) (statusCode int, jsonResponse interface{}) {
-			return jsonapi.Fetch(func() ([]interface{}, error) {
+	api.HandleJSON("GET", "api/articles",
+		func(c *serializer.Context) (statusCode int, jsonResponse interface{}) {
+			return c.Fetch(func() ([]interface{}, error) {
 				return client1c.GetEntryList()
 			})
 		},
 	)
 
-	api4JSON.HandleJSONAPI("POST", "api/articles",
-		func(jsonapi jsonAPI.Interface, ctx *gin.Context) (statusCode int, jsonResponse interface{}) {
-			return jsonapi.Create(func() (map[string]interface{}, error) {
+	api.HandleJSON("POST", "api/articles",
+		func(c *serializer.Context) (statusCode int, jsonResponse interface{}) {
+			return c.Create(func() (map[string]interface{}, error) {
 				return client1c.CreateEntry()
 			})
 		},
 	)
 
-	return api
+	return base
 }
 
 func main() {
