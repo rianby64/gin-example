@@ -10,6 +10,7 @@ import (
 
 	main "github.com/rianby64/gin-example"
 	client1c "github.com/rianby64/gin-example/lib/1c-client"
+	"github.com/rianby64/gin-example/plug"
 )
 
 var mockClient1C *client1c.MockClient
@@ -23,7 +24,7 @@ func init() {
 	fmt.Printf("Running host=%s\n", host)
 	mockRouter, mockEncoderRouter = main.SetupRouter()
 	mockClient1C = &client1c.MockClient{}
-	client1c.PlugToServer(mockClient1C, mockEncoderRouter)
+	plug.Client1C(mockClient1C, mockEncoderRouter)
 }
 
 func Test_articles_CRUD__OK(t *testing.T) {

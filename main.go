@@ -5,6 +5,7 @@ import (
 
 	"github.com/rianby64/gin-example/encoder"
 	client1C "github.com/rianby64/gin-example/lib/1c-client"
+	"github.com/rianby64/gin-example/plug"
 )
 
 // SetupClient1C constructs the client for main
@@ -22,7 +23,7 @@ func SetupRouter() (*gin.Engine, *encoder.Engine) {
 func main() {
 	r, e := SetupRouter()
 	c := SetupClient1C()
-	client1C.PlugToServer(c, e)
+	plug.Client1C(c, e) // don't like this line
 
 	// Listen and serve on 0.0.0.0:8080
 	r.Run(":8080")
