@@ -13,34 +13,16 @@ func SetupClient1C() client1C.Interface {
 }
 
 // SetupRouter the server
-func SetupRouter(client1c client1C.Interface) *gin.Engine {
+func SetupRouter() (*gin.Engine, *encoder.Engine) {
 	base := gin.Default()
-
 	api := encoder.NewEngine(base)
-	g := api.GroupJSON("api")
-
-	g.HandleJSON("GET", "articles",
-		func(c *encoder.Context) (statusCode int, jsonResponse interface{}) {
-			return c.Fetch(func() ([]interface{}, error) {
-				return client1c.GetEntryList()
-			})
-		},
-	)
-
-	g.HandleJSON("POST", "articles",
-		func(c *encoder.Context) (statusCode int, jsonResponse interface{}) {
-			return c.Create(func() (map[string]interface{}, error) {
-				return client1c.CreateEntry()
-			})
-		},
-	)
-
-	return base
+	return base, api
 }
 
 func main() {
-	client1c := SetupClient1C()
-	r := SetupRouter(client1c)
+	r, e := SetupRouter()
+	c := SetupClient1C()
+	client1C.PlugToServer(c, e)
 
 	// Listen and serve on 0.0.0.0:8080
 	r.Run(":8080")

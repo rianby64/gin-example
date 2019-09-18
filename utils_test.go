@@ -9,12 +9,15 @@ import (
 	"net/http/httptest"
 
 	"github.com/gin-gonic/gin"
+
+	"github.com/rianby64/gin-example/encoder"
 )
 
 var host string
 var port string
 var Error404NotFound = errors.New("404 Not found")
 var mockRouter *gin.Engine
+var mockEncoderRouter *encoder.Engine
 
 func requestResponse(method string, from string, body io.Reader) (interface{}, error) {
 	resp := httptest.NewRecorder()

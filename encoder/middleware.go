@@ -35,12 +35,6 @@ func Middleware(c *gin.Context) {
 	}
 }
 
-// GroupJSON what a heck
-func (e *Engine) GroupJSON(URL string) *RouterGroup {
-	rg := RouterGroup{e.Group(URL)}
-	return &rg
-}
-
 // HandleJSON registers a method and URL to match a handler
 func (rg *RouterGroup) HandleJSON(method, URL string, handler Handler) {
 	rg.Handle(method, URL, func(c *gin.Context) {
@@ -53,6 +47,12 @@ func (e *Engine) HandleJSON(method, URL string, handler Handler) {
 	e.Handle(method, URL, func(c *gin.Context) {
 		c.Set("Handler", handler)
 	})
+}
+
+// GroupJSON what a heck
+func (e *Engine) GroupJSON(URL string) *RouterGroup {
+	rg := RouterGroup{e.Group(URL)}
+	return &rg
 }
 
 // NewEngine constructor

@@ -1,5 +1,7 @@
 package client
 
+import "github.com/rianby64/gin-example/encoder"
+
 // Interface manages the proxy to bring Entries from somewhere
 type Interface interface {
 	GetEntryList() ([]interface{}, error)
@@ -65,5 +67,28 @@ func (c *client) DeleteEntry() (map[string]interface{}, error) {
 
 // New is the constructor for this proxy
 func New() Interface {
-	return &client{}
+	client1c := client{}
+	return &client1c
+}
+
+// PlugToServer links this client with server
+func PlugToServer(client1c Interface, e *encoder.Engine) {
+
+	g := e.GroupJSON("api")
+
+	g.HandleJSON("GET", "articles",
+		func(c *encoder.Context) (statusCode int, jsonResponse interface{}) {
+			return c.Fetch(func() ([]interface{}, error) {
+				return client1c.GetEntryList()
+			})
+		},
+	)
+
+	g.HandleJSON("POST", "articles",
+		func(c *encoder.Context) (statusCode int, jsonResponse interface{}) {
+			return c.Create(func() (map[string]interface{}, error) {
+				return client1c.CreateEntry()
+			})
+		},
+	)
 }

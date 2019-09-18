@@ -21,8 +21,9 @@ func init() {
 		port = os.Getenv("PORT")
 	}
 	fmt.Printf("Running host=%s\n", host)
+	mockRouter, mockEncoderRouter = main.SetupRouter()
 	mockClient1C = &client1c.MockClient{}
-	mockRouter = main.SetupRouter(mockClient1C)
+	client1c.PlugToServer(mockClient1C, mockEncoderRouter)
 }
 
 func Test_articles_CRUD__OK(t *testing.T) {
