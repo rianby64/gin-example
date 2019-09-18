@@ -6,9 +6,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Engine is the extension-ecoder for gin engine
+// Engine is the extension-encoder for *gin.Engine
 type Engine struct {
 	*gin.Engine
+}
+
+// RouterGroup is the extension-encoder for gin RouterGroup
+type RouterGroup struct {
+	*gin.RouterGroup
 }
 
 // Handler signature
@@ -28,6 +33,19 @@ func Middleware(c *gin.Context) {
 			c.JSON(statusCode, jsonResponse)
 		}
 	}
+}
+
+// GroupJSON what a heck
+func (e *Engine) GroupJSON(URL string) *RouterGroup {
+	rg := RouterGroup{e.Group(URL)}
+	return &rg
+}
+
+// HandleJSON registers a method and URL to match a handler
+func (rg *RouterGroup) HandleJSON(method, URL string, handler Handler) {
+	rg.Handle(method, URL, func(c *gin.Context) {
+		c.Set("Handler", handler)
+	})
 }
 
 // HandleJSON registers a method and URL to match a handler
