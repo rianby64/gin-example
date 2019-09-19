@@ -21,7 +21,7 @@ type client struct {
 // GetEntryList retreives from 1C the info
 func (c *client) GetEntryList() (interface{}, error) {
 	pwd, _ := os.Getwd()
-	path := pwd + "/src.json"
+	path := pwd + "/lib/1c-client/src.json"
 	txt, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, err
