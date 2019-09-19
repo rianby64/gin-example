@@ -1,7 +1,11 @@
 package main
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 
 	"github.com/rianby64/gin-example/encoder"
 	client1C "github.com/rianby64/gin-example/lib/1c-client"
@@ -26,5 +30,11 @@ func main() {
 	plug.Client1C(c, e) // don't like this line
 
 	// Listen and serve on 0.0.0.0:8080
-	r.Run(":8080")
+	err := godotenv.Load()
+	var host, port string
+	if err == nil {
+		host = os.Getenv("HOST")
+		port = os.Getenv("PORT")
+	}
+	r.Run(fmt.Sprintf("%s:%s", host, port))
 }
