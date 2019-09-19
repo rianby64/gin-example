@@ -8,8 +8,8 @@ import (
 
 // Interface interface
 type Interface interface {
-	Fetch(getData func() ([]interface{}, error)) (int, map[string]interface{})
-	Create(getData func() (map[string]interface{}, error)) (int, map[string]interface{})
+	Fetch(getData func() (interface{}, error)) (int, interface{})
+	Create(getData func() (interface{}, error)) (int, interface{})
 }
 
 // Context struct
@@ -18,7 +18,7 @@ type Context struct {
 }
 
 // Fetch data
-func (jar *Context) Fetch(getData func() ([]interface{}, error)) (int, map[string]interface{}) {
+func (jar *Context) Fetch(getData func() (interface{}, error)) (int, interface{}) {
 	data, _ := getData()
 	result := map[string]interface{}{
 		"data": data,
@@ -27,7 +27,7 @@ func (jar *Context) Fetch(getData func() ([]interface{}, error)) (int, map[strin
 }
 
 // Create resource
-func (jar *Context) Create(getData func() (map[string]interface{}, error)) (int, map[string]interface{}) {
+func (jar *Context) Create(getData func() (interface{}, error)) (int, interface{}) {
 	data, _ := getData()
 	result := map[string]interface{}{
 		"data": map[string]interface{}{

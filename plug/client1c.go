@@ -9,7 +9,7 @@ import (
 
 func getArticles(client1c client1C.Interface) encoder.Handler {
 	return func(c *encoder.Context) (statusCode int, jsonResponse interface{}) {
-		return c.Fetch(func() ([]interface{}, error) {
+		return c.Fetch(func() (interface{}, error) {
 			return client1c.GetEntryList()
 		})
 	}
@@ -17,7 +17,7 @@ func getArticles(client1c client1C.Interface) encoder.Handler {
 
 func postArticles(client1c client1C.Interface) encoder.Handler {
 	return func(c *encoder.Context) (statusCode int, jsonResponse interface{}) {
-		return c.Create(func() (map[string]interface{}, error) {
+		return c.Create(func() (interface{}, error) {
 			return client1c.CreateEntry()
 		})
 	}
