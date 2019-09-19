@@ -1,5 +1,11 @@
 package client
 
+import (
+	"encoding/json"
+	"io/ioutil"
+	"os"
+)
+
 // Interface manages the proxy to bring Entries from somewhere
 type Interface interface {
 	GetEntryList() (interface{}, error)
@@ -14,7 +20,17 @@ type client struct {
 
 // GetEntryList retreives from 1C the info
 func (c *client) GetEntryList() (interface{}, error) {
-	return []interface{}{}, nil
+	pwd, _ := os.Getwd()
+	path := pwd + "/src.json"
+	txt, err := ioutil.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+	var result []interface{}
+	if err := json.Unmarshal(txt, &result); err != nil {
+		return nil, err
+	}
+	return result, nil
 }
 
 // GetEntry retreives from 1C the info

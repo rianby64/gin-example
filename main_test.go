@@ -37,7 +37,8 @@ func Test_articles_CRUD__OK(t *testing.T) {
 
 		data, _ := mockClient1C.GetEntryList()
 		expected := map[string]interface{}{
-			"data": data,
+			"id":     "ID",
+			"result": data,
 		}
 		assert.Equal(t, expected, resp)
 	})
@@ -51,11 +52,8 @@ func Test_articles_CRUD__OK(t *testing.T) {
 
 		data, _ := mockClient1C.CreateEntry()
 		expected := map[string]interface{}{
-			"data": map[string]interface{}{
-				"type":       "photos",
-				"id":         "550e8400-e29b-41d4-a716-446655440000",
-				"attributes": data,
-			},
+			"id":     "ID",
+			"result": data,
 		}
 		assert.Equal(t, expected, resp)
 	})

@@ -16,8 +16,9 @@ func Test_client1c_CRUD__OK(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		expected := []interface{}{}
-		assert.Equal(t, expected, resp)
+		arr := resp.([]interface{})
+		expected := 8
+		assert.Equal(t, expected, len(arr))
 	})
 
 	t.Run("create entry", func(t *testing.T) {

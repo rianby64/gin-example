@@ -6,10 +6,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type source func() (interface{}, error)
+
 // Interface interface
 type Interface interface {
-	Fetch(getData func() (interface{}, error)) (int, interface{})
-	Create(getData func() (interface{}, error)) (int, interface{})
+	Fetch(fn source) (int, interface{})
+	Create(fn source) (int, interface{})
 }
 
 // Context struct
@@ -18,23 +20,21 @@ type Context struct {
 }
 
 // Fetch data
-func (jar *Context) Fetch(getData func() (interface{}, error)) (int, interface{}) {
-	data, _ := getData()
+func (jar *Context) Fetch(fn source) (int, interface{}) {
+	data, _ := fn()
 	result := map[string]interface{}{
-		"data": data,
+		"id":     "ID",
+		"result": data,
 	}
 	return http.StatusOK, result
 }
 
 // Create resource
-func (jar *Context) Create(getData func() (interface{}, error)) (int, interface{}) {
-	data, _ := getData()
+func (jar *Context) Create(fn source) (int, interface{}) {
+	data, _ := fn()
 	result := map[string]interface{}{
-		"data": map[string]interface{}{
-			"type":       "photos",
-			"id":         "550e8400-e29b-41d4-a716-446655440000",
-			"attributes": data,
-		},
+		"id":     "ID",
+		"result": data,
 	}
 	return http.StatusCreated, result
 }
